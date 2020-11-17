@@ -15,6 +15,8 @@
 Если контейнер зависит от содержимого проекта (код или т. п.), то образ нужно заново сбилдить, иначе изменения не подтянутся внутрь контейнера.
 Сделать пример и запустить без билда.
 
+https://stackoverflow.com/questions/40112083/can-i-use-docker-for-installing-ubuntu-on-a-mac
+
 3. Differents between a VM and a (Docker) Container. Pros and Cons?
 
 ![](https://blog.netapp.com/wp-content/uploads/2016/03/Screen-Shot-2018-03-20-at-9.24.09-AM-935x500.png)
