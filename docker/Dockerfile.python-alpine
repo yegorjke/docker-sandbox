@@ -5,9 +5,9 @@ FROM python:${version}-alpine
 RUN apk update
 RUN apk add make automake gcc g++ python3-dev
 
-RUN pip install numpy
+RUN pip install numpy pytest
 
 WORKDIR /app
-COPY . .
+COPY example-app-1 .
 
 CMD ["python", "app.py"]

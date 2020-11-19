@@ -1,75 +1,96 @@
 # Docker Workshop
 
-## Part 1
+## Installation and Minimal Example
 
-1. Installation and Minimal Example
+Run hello-world:
+```sh
+$ docker run -it --rm hello-world
+```
 
+## What is a Dockerfile? What is a Docker image? What is a Docker Container?
 
-2. What is a Dockerfile? What is a Docker image? What is a Docker Container?
+![](https://phoenixnap.com/kb/wp-content/uploads/2019/10/crating-a-docker-container.png)
 
-Докерфайл - это "исходный код" докер контейнера. В нем описывается шаблон того, как будет построен контейнер.
-Докер образ - это готовый шаблон, из которого можно запустить контейнер.
-Контейнер создается из образа и содержит в себе абсолютно все, что описано в докерфайле.
+Save image from within docker container:
 
-Подводный камень:
-Если контейнер зависит от содержимого проекта (код или т. п.), то образ нужно заново сбилдить, иначе изменения не подтянутся внутрь контейнера.
-Сделать пример и запустить без билда.
+```sh
+$ docker commit <container_id> <new_docker_image_tag>
+```
 
-https://stackoverflow.com/questions/40112083/can-i-use-docker-for-installing-ubuntu-on-a-mac
-
-3. Differents between a VM and a (Docker) Container. Pros and Cons?
+## Differents between a VM and a (Docker) Container. Pros and Cons?
 
 ![](https://blog.netapp.com/wp-content/uploads/2016/03/Screen-Shot-2018-03-20-at-9.24.09-AM-935x500.png)
 
-4. Creating own Docker image
+## Creating own Docker image. Best practises
 
 ```sh
-$ git clone https://github.com/tokibito/django-example-todo.git
+$  git clone https://github.com/encode/starlette-example.git
 ```
 
 Build the image:
 
 ```sh
-$ docker build \
-  -t $(whoami)/ubuntu_custom_image \
-  -f ./docker/Dockerfile \
-  --build-arg version="18.04" \
-  .
+$ docker build -t $(whoami)/example-app-2 -f ./docker/Dockerfile .
 
 # it builds image as latest one
 # you can write specific version at the end of image name after colon (fistbook/pentagram:10.0.1-devel)
 ```
 
-
-5. Running Docker Container
+## Running Docker Container
 
 Run the container:
 
 ```sh
 $ docker run \
-  --shm-size 8G \
-  -p $ARG2:$ARG2 \
-  --volume=$XSOCK:$XSOCK:rw \
-  --mount type=bind,source="$PWD",target=/app \
+  --name example_app_2 \
+  -p 8000:8000 \
   -it --rm \
-  --name my_custom_container \
-  $(whoami)/ubuntu_custom_image:latest bash
+  $(whoami)/example-app-2:latest bash
 ```
 
-## Part 2
+## Volumes and Mounts
 
-6.
+```sh
+$ docker volume create datavolume1
+```
 
+```sh
+$ docker run ... -v datavolume1:/data ...
 
-7.
+# or using a bindmount:
+$ docker run ... -v /path/data:/data                         # or
+$ docker run ... --mount type=bind,source=/path/data,target=/data
+```
 
+## Networks
 
-8. Docker Compose (vs.) Docker Swarm
+```sh
+$ docker network create mynet
 
+$ docker run ... --network mynet --name alpine1 alpine:latest ash
+$ docker run ... --network mynet --name alpine2 alpine ash
 
-9. Working with Vagrant
+```
 
+```sh
+$ docker container attach alpine1
+
+# ping -c 2 alpine 2
+```
+
+## Docker Compose vs. Docker Swarm
+
+These are different things!
+ 
+Docker Compose - high-level API for Docker Engine.
+Docker Swarm - the orchestration tool.
 
 ## Useful Resources
 
-[Docker Python API](https://docker-py.readthedocs.io/en/stable/)
+1. [Docker Overview](https://docs.docker.com/get-started/overview/)
+
+1. [Install Docker on Ubuntu](https://docs.docker.com/engine/install/ubuntu/)
+
+1. [Docker Python API](https://docker-py.readthedocs.io/en/stable/)
+
+1. [Katacoda](https://www.katacoda.com/learn)
